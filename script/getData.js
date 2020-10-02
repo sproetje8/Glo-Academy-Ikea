@@ -13,7 +13,12 @@ export const getData = {
 	},
 	wishList(list, callback) {
 		this.get((data) => {
-			const result = data.filter((item) => list.includes(item.id));
+			let result = data.filter((item) => list.includes(item.id));
+
+			if (result.length === 0) {
+				result = 'Список желаний пуст.';
+			}
+
 			callback(result);
 		});
 	},
@@ -41,7 +46,7 @@ export const getData = {
 	},
 	search(value, callback) {
 		this.get((data) => {
-			const result = data.filter((item) => {
+			let result = data.filter((item) => {
 				for (const prop in item) {
 					if (
 						PARAM.search.includes(prop) &&
@@ -51,6 +56,11 @@ export const getData = {
 					}
 				}
 			});
+
+			if (result.length === 0) {
+				result = 'По вашему запросу товаров не найдено.';
+			}
+
 			callback(result);
 		});
 	},
@@ -65,8 +75,10 @@ export const getData = {
 			const filteredByValue = data.filter(
 				(item) => item.category.toLowerCase() === value.toLowerCase()
 			);
-			
-			const result = Array.from(new Set(filteredByValue.map((item) => item.subcategory)));
+
+			const result = Array.from(
+				new Set(filteredByValue.map((item) => item.subcategory))
+			);
 
 			callback(result);
 		});
