@@ -30,9 +30,14 @@ export const getData = {
 	},
 	cart(list, callback) {
 		this.get((data) => {
-			const result = data.filter((item) =>
+			let result = data.filter((item) =>
 				list.some((obj) => obj.id === item.id)
 			);
+
+			if (result.length === 0) {
+				result = 'Корзина пуста.';
+			}
+
 			callback(result);
 		});
 	},
