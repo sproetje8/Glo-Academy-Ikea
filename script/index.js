@@ -1,4 +1,3 @@
-import './storage.js';
 import generateHeader from './generate-header.js';
 import generateFooter from './generate-footer.js';
 import generateCatalog from './generate-catalog.js';

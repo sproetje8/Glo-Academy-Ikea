@@ -1,5 +1,3 @@
-localStorage.setItem('data', JSON.stringify([{}, {}, {}]));
-
 export const getLocalStorage = (key) => {
 	return localStorage.getItem(key) ? JSON.parse(localStorage.getItem(key)) : [];
 };
