@@ -6,11 +6,21 @@ const PARAM = {
 
 export const getData = {
 	url: 'database/dataBase.json',
+
+	async getData(url) {
+		const res = await fetch(url);
+
+		if (!res.ok) {
+			throw new Error(`Ошибка по адресу ${url}, статус ошибки ${res.status}`);
+		}
+
+		return await res.json();
+	},
+
 	get(process) {
-		fetch(this.url)
-			.then((response) => response.json()
-			.then(process))
-			.catch();
+		this.getData(this.url)
+			.then(process)
+			.catch((err) => console.log(err));
 	},
 	wishList(list, callback) {
 		this.get((data) => {

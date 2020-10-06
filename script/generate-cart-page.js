@@ -1,6 +1,45 @@
 import { getData } from './getData.js';
 import userData from './user-data.js';
 
+const sendData = async (url, data) => {
+	const res = await fetch(url, {
+		method: 'POST',
+		body: data,
+	});
+
+	if (!res.ok) {
+		throw new Error(`Ошибка по адресу ${url}, статус ошибки ${res.status}`);
+	}
+
+	return await res.json();
+};
+
+const sendCart = () => {
+	const cartForm = document.querySelector('.cart-form');
+
+	cartForm.addEventListener('submit', (e) => {
+		e.preventDefault();
+
+		const formData = new FormData(cartForm);
+		// const cartList = JSON.stringify(data);
+		// formData.set('order', userData.cartList);
+
+		const data = {};
+
+		for (const [key, value] of formData) {
+			data[key] = value;
+		}
+
+		data.order = userData.cartList;
+		
+		sendData('http://jsonplaceholder.typicode.com/posts', JSON.stringify(data))
+			.then(() => {
+				cartForm.reset();
+			})
+			.catch((err) => console.log(err));
+	});
+};
+
 const generateCartPage = () => {
 	if (location.pathname.includes('cart')) {
 		const cartList = document.querySelector('.cart-list');
@@ -121,6 +160,7 @@ const generateCartPage = () => {
 		});
 
 		getData.cart(userData.cartList, renderCartList);
+		sendCart();
 	}
 };
 
